@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma" 
+}
+
+model user{
+  id        Int      @id @default(autoincrement()) //회원 id
+  account   String   @unique //지갑주소
+  email     String   @unique //이메일
+  createdAt DateTime @default(now())
+}
+
+// model VcUser{
+//   id        Int      @id @default(autoincrement()) //회원 id
+//   account   String   @unique //지갑주소
+//   nickName  String? //닉네임 - 사용안함
+//   email     String   @unique //이메일 
+//   createdAt DateTime @default(now()) //만든날
+//   updatedAt DateTime @updatedAt //수정날
+//   tags      Tag[]    @relation("User_Tag_Relation") //사용자 관심사 -사용안함
+//   team      VcTeam[] @relation("User_Team_Relation") //팀 - 사용안함
+//   authoredVotes  Votes[]  @relation("Author_Votes_Relation") //작성한 투표
+//   votedVotes     VoteResult[]  @relation("VoteResult_VcUser_Relation") //투표한 투표
+// }
+
+// model Votes { //투표 테이블
+//   id        Int      @id @default(autoincrement()) //투표 번호
+//   title     String //투표제목
+//   content   String? //투표내용 - 사용안함
+//   type      Int //0.찬반 , 1.선출 
+//   status    Boolean //참 = 투표중 , 거짓 = 투표 종료
+//   count     Int   @default(0)
+//   options   voteOption[] @relation("voteOption_Votes_Relation") //선택지
+//   author    VcUser   @relation("Author_Votes_Relation", fields: [authorAccount], references: [account]) 
+//   authorAccount  String //투표 생성자 user account
+//   tags      Tag[]    @relation("Votes_Tag_Relation") //투표 관련 테그  - 사용안함
+//   voteResult  VoteResult[] @relation("vote_VoteResult_Relation") //투표
+//   startAt DateTime? //투표 시작일 - 사용안함?
+//   endAt DateTime? //투표 종료일 - 사용안함?
+//   createdAt DateTime @default(now()) //만들어진날
+//   updatedAt DateTime @updatedAt //업데이트날
+// }
+
+// model voteOption {
+//   id              Int             @id @default(autoincrement()) //옵션 넘버
+//   vote            Votes           @relation("voteOption_Votes_Relation", fields: [voteId], references: [id]) 
+//   voteId          Int //투표 넘버
+//   option          String //옵션
+//   voteResult      VoteResult[]    @relation("voteOption_VoteResult_Relation")
+//   createdAt       DateTime        @default(now())
+//   updatedAt       DateTime        @updatedAt
+// }
+
+// model VoteResult {
+//   id              Int             @id @default(autoincrement())
+//   option          voteOption      @relation("voteOption_VoteResult_Relation", fields: [optionId], references: [id] )
+//   optionId        Int
+//   vote            Votes           @relation("vote_VoteResult_Relation", fields: [voteId], references: [id])
+//   voteId          Int
+//   voteResult      VcUser          @relation("VoteResult_VcUser_Relation", fields: [voterAccount], references: [account])
+//   voterAccount    String
+//   createdAt       DateTime        @default(now())
+//   updatedAt       DateTime        @updatedAt
+// }
+
+// model VcTeam {//- 사용안함
+//   id        Int      @id @default(autoincrement()) //팀id - 사용안함
+//   name      String   @unique //팀명 - 사용안함
+//   Account   String? //팀 생성자 지갑주소 - 사용안함
+//   email     String? //팀 생성자 이메일 - 사용안함
+//   user      VcUser[]  @relation("User_Team_Relation") //팀구성원 - 사용안함
+//   tags      Tag[]    @relation("Team_Tag_Relation") //팀의 관심사 테그- 사용안함
+// }
+
+// model Tag {//- 사용안함
+//   id    Int     @id @default(autoincrement()) //테그id - 사용안함
+//   tagName  String  @unique //테그 명- 사용안함
+//   votes Votes[] @relation("Votes_Tag_Relation")//관심사로 테그한 투표- 사용안함
+//   users VcUser[]  @relation("User_Tag_Relation")  //관심사로 테그한 유저- 사용안함
+//   team      VcTeam[] @relation("Team_Tag_Relation") // 관심사로 테그한 팀- 사용안함
+//   createdAt DateTime @default(now()) //테그 만든 시간- 사용안함
+// }

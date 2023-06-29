@@ -1,0 +1,24 @@
+# fly.toml app configuration file generated for vc-0623 on 2023-06-23T13:37:04+09:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "vc-0623"
+primary_region = "nrt"
+
+[build]
+  builder = "heroku/buildpacks:20"
+
+[env]
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+
+[checks]
+  [checks.alive]
+    type = "tcp"
+    interval = "15s"
+    timeout = "2s"
+    grace_period = "5s"
